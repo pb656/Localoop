@@ -1,5 +1,4 @@
 {
-  "buildCommand": "npm install && npm run build",
-  "outputDirectory": "build",
-  "framework": "vite"
+  "buildCommand": "bash build.sh",
+  "outputDirectory": "build"
 }
