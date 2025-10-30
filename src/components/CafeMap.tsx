@@ -3,7 +3,7 @@ import { MapPin, Navigation, Coffee, User } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+
 import "leaflet/dist/leaflet.css";
 
 // Fix default marker icon issues for Leaflet
