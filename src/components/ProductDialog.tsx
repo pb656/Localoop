@@ -18,7 +18,7 @@ import {
 } from "./ui/carousel";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useAuth } from "../utils/AuthContext";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import type { Product } from "./ProductCatalogue";
 
 interface ProductDialogProps {
