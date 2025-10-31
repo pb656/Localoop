@@ -1,17 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { MapPin, Navigation, Coffee, User } from "lucide-react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Navigation, Coffee } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 
-import "leaflet/dist/leaflet.css";
+// Vite injects env on import.meta
+// @ts-ignore
+const GOOGLE_MAPS_KEY = (import.meta as any).env?.VITE_GOOGLE_MAPS_API_KEY as string | undefined;
 
-// Fix default marker icon issues for Leaflet
-import L from "leaflet";
-const iconUrl = new URL('leaflet/dist/images/marker-icon.png', import.meta.url).toString();
-const iconShadow = new URL('leaflet/dist/images/marker-shadow.png', import.meta.url).toString();
-L.Marker.prototype.options.icon = L.icon({ iconUrl, shadowUrl: iconShadow });
+function useGoogleMaps(apiKey?: string) {
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    if (!apiKey) return;
+    if ((window as any).google?.maps) {
+      setLoaded(true);
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
+    script.async = true;
+    script.onload = () => setLoaded(true);
+    document.head.appendChild(script);
+  }, [apiKey]);
+  return loaded;
+}
 
 interface Cafe {
   id: number;
@@ -24,19 +36,12 @@ interface Cafe {
   type: "loopzone" | "pickup";
 }
 
-function FlyToLocation({ position }) {
-  const map = useMap();
-  useEffect(() => {
-    if (position) map.flyTo(position, 14, { duration: 1.5 });
-  }, [position, map]);
-  return null;
-}
-
 export function CafeMap() {
   const [selectedCafe, setSelectedCafe] = useState<Cafe | null>(null);
   const [userPosition, setUserPosition] = useState<[number, number] | null>(null);
   const [locating, setLocating] = useState(false);
   const [geoError, setGeoError] = useState("");
+  const googleLoaded = useGoogleMaps(GOOGLE_MAPS_KEY);
 
   // All cafes are in mock data
   const cafes: Cafe[] = [
@@ -49,6 +54,10 @@ export function CafeMap() {
   ];
 
   const defaultCenter: [number, number] = [51.51, -0.12];
+
+  const mapRef = useRef<HTMLDivElement | null>(null);
+  const mapInstanceRef = useRef<any>(null);
+  const markersRef = useRef<any[]>([]);
 
   const handleFindMe = () => {
     setLocating(true);
@@ -71,10 +80,62 @@ export function CafeMap() {
     }
   };
 
+  // Initialize map
   useEffect(() => {
-    // Optionally: Try to locate automatically on component mount
-    // handleFindMe();
-  }, []);
+    if (!googleLoaded || !mapRef.current || mapInstanceRef.current) return;
+    const center = userPosition || defaultCenter;
+    mapInstanceRef.current = new (window as any).google.maps.Map(mapRef.current, {
+      center: { lat: center[0], lng: center[1] },
+      zoom: 13,
+      disableDefaultUI: false,
+    });
+  }, [googleLoaded]);
+
+  // Update center when user position changes
+  useEffect(() => {
+    if (!googleLoaded || !mapInstanceRef.current) return;
+    const center = userPosition || defaultCenter;
+    mapInstanceRef.current.setCenter({ lat: center[0], lng: center[1] });
+  }, [userPosition, googleLoaded]);
+
+  // Render markers
+  useEffect(() => {
+    if (!googleLoaded || !mapInstanceRef.current) return;
+    // clear old markers
+    markersRef.current.forEach((m) => m.setMap(null));
+    markersRef.current = [];
+    cafes.forEach((cafe) => {
+      const marker = new (window as any).google.maps.Marker({
+        position: { lat: cafe.lat, lng: cafe.lng },
+        map: mapInstanceRef.current,
+        title: cafe.name,
+      });
+      const info = new (window as any).google.maps.InfoWindow({
+        content: `<div><strong>${cafe.name}</strong><br/>${cafe.address}${cafe.itemsAvailable > 0 ? `<div style=\"margin-top:6px;color:#16a34a;font-weight:600\">${cafe.itemsAvailable} items</div>` : ""}</div>`,
+      });
+      marker.addListener("click", () => {
+        info.open({ anchor: marker, map: mapInstanceRef.current });
+        setSelectedCafe(cafe);
+      });
+      markersRef.current.push(marker);
+    });
+    if (userPosition) {
+      const userMarker = new (window as any).google.maps.Marker({
+        position: { lat: userPosition[0], lng: userPosition[1] },
+        map: mapInstanceRef.current,
+        title: "You are here",
+        icon: {
+          path: (window as any).google.maps.SymbolPath.CIRCLE,
+          scale: 7,
+          fillColor: "#2563eb",
+          fillOpacity: 0.9,
+          strokeColor: "white",
+          strokeWeight: 2,
+        },
+      });
+      markersRef.current.push(userMarker);
+    }
+  }, [cafes, googleLoaded, userPosition]);
 
   return (
     <section id="map" className="py-20 bg-gray-50">
@@ -86,40 +147,20 @@ export function CafeMap() {
           </p>
         </div>
         <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-          {/* Real Map */}
+          {/* Map */}
           <Card className="p-0 overflow-hidden relative">
             <div className="relative w-full min-h-[400px] h-[540px] z-10">
-              <MapContainer
-                center={userPosition || defaultCenter}
-                zoom={13}
-                scrollWheelZoom={true}
-                style={{ width: "100%", height: "100%", zIndex: 1 }}
-              >
-                <TileLayer
-                  attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                {cafes.map((cafe) => (
-                  <Marker 
-                    key={cafe.id}
-                    position={[cafe.lat, cafe.lng]}
-                    eventHandlers={{
-                      click: () => setSelectedCafe(cafe)
-                    }}
-                  >
-                    <Popup>
-                      <strong>{cafe.name}</strong><br/>{cafe.address}
-                      {cafe.itemsAvailable > 0 ? <div className="mt-2 font-semibold text-green-600">{cafe.itemsAvailable} items</div> : null}
-                    </Popup>
-                  </Marker>
-                ))}
-                {userPosition && (
-                  <Marker position={userPosition} icon={L.icon({ iconUrl, iconSize: [25,41], iconAnchor: [12,41], popupAnchor: [1,-34], shadowUrl: iconShadow })}>
-                    <Popup>You are here</Popup>
-                  </Marker>
-                )}
-                {userPosition && <FlyToLocation position={userPosition} />}
-              </MapContainer>
+              {GOOGLE_MAPS_KEY ? (
+                googleLoaded ? (
+                  <div ref={mapRef} style={{ width: "100%", height: "100%" }} />
+                ) : (
+                  <div className="flex items-center justify-center h-full text-gray-600">Loading map…</div>
+                )
+              ) : (
+                <div className="flex items-center justify-center h-full text-center p-8 text-gray-600">
+                  Google Maps key missing. Add VITE_GOOGLE_MAPS_API_KEY to .env to enable.
+                </div>
+              )}
               <Button
                 size="sm"
                 className="absolute top-4 right-4 bg-white text-gray-900 hover:bg-gray-100 z-20 shadow"

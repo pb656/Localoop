@@ -3,11 +3,14 @@ import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import React from "react";
 
-export function Header({ onStoreClick, onAboutClick, onCafesClick }) {
+import { useAuth } from "../utils/AuthContext";
+
+export function Header({ onStoreClick, onAboutClick, onCafesClick, onHowItWorksClick, onSwapShopClick, onSignUpClick, onAccountClick }) {
+  const { user } = useAuth();
   const navLinks = [
-    { name: "How It Works", action: () => (window.location.hash = "#how-it-works") },
+    { name: "How It Works", action: onHowItWorksClick },
     { name: "Café LoopZones", action: onCafesClick },
-    { name: "Swap & Shop", action: onStoreClick },
+    { name: "Swap & Shop", action: onSwapShopClick },
     { name: "About Us", action: onAboutClick },
   ];
 
@@ -45,9 +48,15 @@ export function Header({ onStoreClick, onAboutClick, onCafesClick }) {
             <QrCode className="h-4 w-4 mr-2" />
             Scan LoopTag
           </Button>
-          <Button size="sm" className="bg-green-600 hover:bg-green-700">
-            Get Started
-          </Button>
+          {!user ? (
+            <Button size="sm" className="bg-green-600 hover:bg-green-700" onClick={onSignUpClick}>
+              Get Started
+            </Button>
+          ) : (
+            <Button size="sm" variant="outline" onClick={onAccountClick}>
+              Account
+            </Button>
+          )}
         </div>
 
         {/* Mobile Navigation */}
@@ -79,9 +88,15 @@ export function Header({ onStoreClick, onAboutClick, onCafesClick }) {
                   <QrCode className="h-4 w-4 mr-2" />
                   Scan LoopTag
                 </Button>
-                <Button className="bg-green-600 hover:bg-green-700">
-                  Get Started
-                </Button>
+                {!user ? (
+                  <Button className="bg-green-600 hover:bg-green-700" onClick={onSignUpClick}>
+                    Get Started
+                  </Button>
+                ) : (
+                  <Button variant="outline" onClick={onAccountClick}>
+                    Account
+                  </Button>
+                )}
               </div>
             </nav>
           </SheetContent>

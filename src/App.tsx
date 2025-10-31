@@ -10,6 +10,7 @@ import { LoopCreditsStore } from "./components/LoopCreditsStore";
 import { LocaStoreCheckout } from "./components/LocaStoreCheckout";
 import { AboutUs } from "./components/AboutUs";
 import { PartnerCafes } from "./components/PartnerCafes";
+import { Account } from "./components/Account";
 import { SignIn } from "./components/SignIn";
 import { SignUp } from "./components/SignUp";
 import { useAuth } from "./utils/AuthContext";
@@ -20,6 +21,13 @@ export default function App() {
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [pendingAfterAuth, setPendingAfterAuth] = useState<null | 'store' | 'checkout'>(null);
 
+  const scrollToId = (id: string) => {
+    requestAnimationFrame(() => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  };
+
   const handleStoreClick = () => {
     if (!user) {
       setPendingAfterAuth("store");
@@ -29,6 +37,14 @@ export default function App() {
     }
   };
   const handleHomeClick = () => setView("home");
+  const handleHowItWorks = () => {
+    setView("home");
+    setTimeout(() => scrollToId("how-it-works"), 0);
+  };
+  const handleSwapShop = () => {
+    setView("home");
+    setTimeout(() => scrollToId("catalogue"), 0);
+  };
   const handleBuyCredits = (pkg) => {
     if (!user) {
       setPendingAfterAuth("checkout");
@@ -56,6 +72,10 @@ export default function App() {
         onStoreClick={handleStoreClick}
         onAboutClick={() => setView("about")}
         onCafesClick={() => setView("cafes")}
+        onHowItWorksClick={handleHowItWorks}
+        onSwapShopClick={handleSwapShop}
+        onSignUpClick={() => setView("signup")}
+        onAccountClick={() => setView("account")}
       />
       <main>
         {view === "home" && (
@@ -94,6 +114,9 @@ export default function App() {
             onSwitchToSignIn={() => setView("signin")}
             onBack={handleAuthBack}
           />
+        )}
+        {view === "account" && (
+          <Account onBack={handleHomeClick} />
         )}
       </main>
       <Footer />
