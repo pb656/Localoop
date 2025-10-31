@@ -1,7 +1,9 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
-import { Leaf, Users, Recycle, Globe2, ArrowLeft } from "lucide-react";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { Leaf, Users, Recycle, Globe2, ArrowLeft, Mail, Send } from "lucide-react";
 
 export function AboutUs({ onBack }: { onBack: () => void }) {
   return (
@@ -40,11 +42,76 @@ export function AboutUs({ onBack }: { onBack: () => void }) {
           </Card>
         </div>
 
-        <Card className="p-6">
+        <Card className="p-6 mb-10">
           <h3 className="mb-2">Our Mission</h3>
           <p className="text-gray-700">
             To make sustainable fashion the default choice by connecting local communities, enabling effortless reuse, and rewarding eco-friendly behavior with LocaCredit.
           </p>
+        </Card>
+
+        <div className="text-center mb-10">
+          <h2 className="text-3xl mb-2">Meet Our Team</h2>
+          <p className="text-gray-600">The people behind Localoop</p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6 mb-10">
+          <Card className="p-6 text-center">
+            <div className="h-32 w-32 mx-auto mb-4 bg-gradient-to-br from-blue-300 to-blue-500 rounded-full flex items-center justify-center text-white text-5xl font-bold">
+              AR
+            </div>
+            <h4 className="mb-1 font-semibold">Ahmed Al-Rashid</h4>
+            <p className="text-sm text-gray-600 mb-4">CEO & Co-founder</p>
+            <p className="text-sm">Leading Localoop's vision for sustainable fashion transformation</p>
+          </Card>
+
+          <Card className="p-6 text-center">
+            <div className="h-32 w-32 mx-auto mb-4 bg-gradient-to-br from-green-300 to-green-500 rounded-full flex items-center justify-center text-white text-5xl font-bold">
+              SK
+            </div>
+            <h4 className="mb-1 font-semibold">Sarah Khan</h4>
+            <p className="text-sm text-gray-600 mb-4">CTO & Co-founder</p>
+            <p className="text-sm">Building the technology powering circular fashion experiences</p>
+          </Card>
+
+          <Card className="p-6 text-center">
+            <div className="h-32 w-32 mx-auto mb-4 bg-gradient-to-br from-amber-300 to-amber-500 rounded-full flex items-center justify-center text-white text-5xl font-bold">
+              JM
+            </div>
+            <h4 className="mb-1 font-semibold">James Mitchell</h4>
+            <p className="text-sm text-gray-600 mb-4">Head of Partnerships</p>
+            <p className="text-sm">Connecting cafés and communities for seamless exchange</p>
+          </Card>
+        </div>
+
+        <Card className="p-8">
+          <div className="flex items-center gap-2 mb-6">
+            <Mail className="h-6 w-6 text-green-600" />
+            <h2 className="text-2xl">Get In Touch</h2>
+          </div>
+          <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); alert("Message sent! We'll get back to you soon."); }}>
+            <div>
+              <Label htmlFor="contactName">Your Name</Label>
+              <Input id="contactName" type="text" placeholder="Ahmed Al-Mansoori" required />
+            </div>
+            <div>
+              <Label htmlFor="contactEmail">Email Address</Label>
+              <Input id="contactEmail" type="email" placeholder="you@example.com" required />
+            </div>
+            <div>
+              <Label htmlFor="contactMessage">Message</Label>
+              <textarea
+                id="contactMessage"
+                rows={4}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                placeholder="Tell us how we can help..."
+                required
+              ></textarea>
+            </div>
+            <Button type="submit" className="w-full bg-green-600 hover:bg-green-700">
+              <Send className="h-4 w-4 mr-2" />
+              Send Message
+            </Button>
+          </form>
         </Card>
       </div>
     </section>
