@@ -56,29 +56,35 @@ export function AboutUs({ onBack }: { onBack: () => void }) {
 
         <div className="grid md:grid-cols-3 gap-6 mb-10">
           <Card className="p-6 text-center">
-            <div className="h-32 w-32 mx-auto mb-4 bg-gradient-to-br from-blue-300 to-blue-500 rounded-full flex items-center justify-center text-white text-5xl font-bold">
-              AR
-            </div>
-            <h4 className="mb-1 font-semibold">Ahmed Al-Rashid</h4>
+            <img 
+              src="/team/Ziya.jpg" 
+              alt="Ziya Fathima"
+              className="h-32 w-32 mx-auto mb-4 rounded-full object-cover border-4 border-blue-200"
+            />
+            <h4 className="mb-1 font-semibold">Ziya Fathima</h4>
             <p className="text-sm text-gray-600 mb-4">CEO & Co-founder</p>
             <p className="text-sm">Leading Localoop's vision for sustainable fashion transformation</p>
           </Card>
 
           <Card className="p-6 text-center">
-            <div className="h-32 w-32 mx-auto mb-4 bg-gradient-to-br from-green-300 to-green-500 rounded-full flex items-center justify-center text-white text-5xl font-bold">
-              SK
-            </div>
-            <h4 className="mb-1 font-semibold">Sarah Khan</h4>
+            <img 
+              src="/team/Pranay.jpg" 
+              alt="Pranay Bhatia"
+              className="h-32 w-32 mx-auto mb-4 rounded-full object-cover border-4 border-green-200"
+            />
+            <h4 className="mb-1 font-semibold">Pranay Bhatia</h4>
             <p className="text-sm text-gray-600 mb-4">CTO & Co-founder</p>
             <p className="text-sm">Building the technology powering circular fashion experiences</p>
           </Card>
 
           <Card className="p-6 text-center">
-            <div className="h-32 w-32 mx-auto mb-4 bg-gradient-to-br from-amber-300 to-amber-500 rounded-full flex items-center justify-center text-white text-5xl font-bold">
-              JM
-            </div>
-            <h4 className="mb-1 font-semibold">James Mitchell</h4>
-            <p className="text-sm text-gray-600 mb-4">Head of Partnerships</p>
+            <img 
+              src="/team/Nandini.jpg" 
+              alt="Nandini Pathak"
+              className="h-32 w-32 mx-auto mb-4 rounded-full object-cover border-4 border-amber-200"
+            />
+            <h4 className="mb-1 font-semibold">Nandini Pathak</h4>
+            <p className="text-sm text-gray-600 mb-4">CMO & Co-founder</p>
             <p className="text-sm">Connecting cafés and communities for seamless exchange</p>
           </Card>
         </div>

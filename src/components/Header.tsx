@@ -5,7 +5,7 @@ import React from "react";
 
 import { useAuth } from "../utils/AuthContext";
 
-export function Header({ onStoreClick, onAboutClick, onCafesClick, onHowItWorksClick, onSwapShopClick, onSignUpClick, onAccountClick }) {
+export function Header({ onStoreClick, onAboutClick, onCafesClick, onHowItWorksClick, onSwapShopClick, onSignUpClick, onAccountClick, onHomeClick }) {
   const { user } = useAuth();
   const navLinks = [
     { name: "How It Works", action: onHowItWorksClick },
@@ -17,10 +17,10 @@ export function Header({ onStoreClick, onAboutClick, onCafesClick, onHowItWorksC
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <div className="flex items-center gap-2">
+        <button onClick={onHomeClick} className="flex items-center gap-2 cursor-pointer">
           <Leaf className="h-6 w-6 text-green-600" />
           <span className="text-xl">Localoop</span>
-        </div>
+        </button>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">

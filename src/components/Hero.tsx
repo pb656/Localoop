@@ -3,6 +3,13 @@ import { Button } from "./ui/button";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 export function Hero() {
+  const scrollToId = (id: string) => {
+    requestAnimationFrame(() => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  };
+
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-green-50 to-blue-50">
       <div className="container mx-auto px-4 py-20 md:py-32">
@@ -24,11 +31,11 @@ export function Hero() {
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-green-600 hover:bg-green-700">
+              <Button size="lg" className="bg-green-600 hover:bg-green-700" onClick={() => scrollToId("catalogue")}>
                 Explore Collections
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button size="lg" variant="outline">
+              <Button size="lg" variant="outline" onClick={() => scrollToId("map")}>
                 Find Cafés Near You
               </Button>
             </div>

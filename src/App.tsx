@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
 import { HowItWorks } from "./components/HowItWorks";
@@ -76,6 +76,7 @@ export default function App() {
         onSwapShopClick={handleSwapShop}
         onSignUpClick={() => setView("signup")}
         onAccountClick={() => setView("account")}
+        onHomeClick={handleHomeClick}
       />
       <main>
         {view === "home" && (
