@@ -74,7 +74,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#about-us" className="hover:text-white transition-colors">
                   Our Story
                 </a>
               </li>
@@ -84,7 +84,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#cafe-loopzones" className="hover:text-white transition-colors">
                   Partner Cafés
                 </a>
               </li>
@@ -96,12 +96,12 @@ export function Footer() {
             <h4 className="text-white mb-4">Support</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#contact-us" className="hover:text-white transition-colors">
                   Help Center
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#loca-store" className="hover:text-white transition-colors">
                   LoopCredits
                 </a>
               </li>
@@ -111,7 +111,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#contact-us" className="hover:text-white transition-colors">
                   Contact Us
                 </a>
               </li>
