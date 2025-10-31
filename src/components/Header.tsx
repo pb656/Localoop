@@ -3,13 +3,12 @@ import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import React from "react";
 
-export function Header({ onStoreClick }) {
+export function Header({ onStoreClick, onAboutClick, onCafesClick }) {
   const navLinks = [
-    { name: "How It Works", href: "#how-it-works" },
-    { name: "Café LoopZones", href: "#cafe-loopzones" },
-    { name: "Swap & Shop", href: "#swap-shop" },
-    { name: "Find Cafés", href: "#map" },
-    { name: "Browse", href: "#catalogue" },
+    { name: "How It Works", action: () => (window.location.hash = "#how-it-works") },
+    { name: "Café LoopZones", action: onCafesClick },
+    { name: "Swap & Shop", action: onStoreClick },
+    { name: "About Us", action: onAboutClick },
   ];
 
   return (
@@ -23,13 +22,13 @@ export function Header({ onStoreClick }) {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (
-            <a
+            <button
               key={link.name}
-              href={link.href}
+              onClick={link.action}
               className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
             >
               {link.name}
-            </a>
+            </button>
           ))}
           <Button
             size="sm"
@@ -61,13 +60,13 @@ export function Header({ onStoreClick }) {
           <SheetContent>
             <nav className="flex flex-col gap-4 mt-8">
               {navLinks.map((link) => (
-                <a
+                <button
                   key={link.name}
-                  href={link.href}
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                  onClick={link.action}
+                  className="text-left text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   {link.name}
-                </a>
+                </button>
               ))}
               <Button
                 className="mt-2 bg-green-50 text-green-700 hover:bg-green-100 border-green-600 font-semibold"

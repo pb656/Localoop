@@ -8,13 +8,15 @@ import { Benefits } from "./components/Benefits";
 import { Footer } from "./components/Footer";
 import { LoopCreditsStore } from "./components/LoopCreditsStore";
 import { LocaStoreCheckout } from "./components/LocaStoreCheckout";
+import { AboutUs } from "./components/AboutUs";
+import { PartnerCafes } from "./components/PartnerCafes";
 import { SignIn } from "./components/SignIn";
 import { SignUp } from "./components/SignUp";
 import { useAuth } from "./utils/AuthContext";
 
 export default function App() {
   const { user } = useAuth();
-  const [view, setView] = useState<'home' | 'store' | 'checkout' | 'signin' | 'signup'>("home");
+  const [view, setView] = useState<'home' | 'store' | 'checkout' | 'signin' | 'signup' | 'about' | 'cafes'>("home");
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [pendingAfterAuth, setPendingAfterAuth] = useState<null | 'store' | 'checkout'>(null);
 
@@ -50,7 +52,11 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Header onStoreClick={handleStoreClick} />
+      <Header 
+        onStoreClick={handleStoreClick}
+        onAboutClick={() => setView("about")}
+        onCafesClick={() => setView("cafes")}
+      />
       <main>
         {view === "home" && (
           <>
@@ -63,6 +69,12 @@ export default function App() {
         )}
         {view === "store" && (
           <LoopCreditsStore onBack={handleHomeClick} onBuyCredits={handleBuyCredits} />
+        )}
+        {view === "about" && (
+          <AboutUs onBack={handleHomeClick} />
+        )}
+        {view === "cafes" && (
+          <PartnerCafes onBack={handleHomeClick} />
         )}
         {view === "checkout" && (
           <LocaStoreCheckout

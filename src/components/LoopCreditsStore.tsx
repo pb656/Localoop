@@ -13,11 +13,12 @@ interface LoopCreditsStoreProps {
 export function LoopCreditsStore({ onBack, onBuyCredits }: LoopCreditsStoreProps) {
   const { user } = useAuth();
 
+  // Adjusted pricing to better reflect typical item values in catalogue
   const packages = [
-    { id: 1, credits: 100, price: 10, popular: false, bonus: 0 },
-    { id: 2, credits: 250, price: 24, popular: true, bonus: 10 },
-    { id: 3, credits: 500, price: 45, popular: false, bonus: 25 },
-    { id: 4, credits: 1000, price: 85, popular: false, bonus: 75 },
+    { id: 1, credits: 100, price: 35, popular: false, bonus: 0 },
+    { id: 2, credits: 250, price: 80, popular: true, bonus: 20 },
+    { id: 3, credits: 500, price: 150, popular: false, bonus: 60 },
+    { id: 4, credits: 1000, price: 280, popular: false, bonus: 160 },
   ];
 
   return (

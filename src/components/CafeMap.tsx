@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MapPin, Navigation, Coffee, User } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
@@ -9,8 +9,8 @@ import "leaflet/dist/leaflet.css";
 
 // Fix default marker icon issues for Leaflet
 import L from "leaflet";
-import iconUrl from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+const iconUrl = new URL('leaflet/dist/images/marker-icon.png', import.meta.url).toString();
+const iconShadow = new URL('leaflet/dist/images/marker-shadow.png', import.meta.url).toString();
 L.Marker.prototype.options.icon = L.icon({ iconUrl, shadowUrl: iconShadow });
 
 interface Cafe {
