@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
 import { HowItWorks } from "./components/HowItWorks";
@@ -39,8 +39,28 @@ export default function App() {
   const handleHomeClick = () => setView("home");
   const handleHowItWorks = () => {
     setView("home");
-    setTimeout(() => scrollToId("how-it-works"), 0);
+    // ensure the URL shows the anchor and scroll after the home view renders
+    setTimeout(() => {
+      try { window.location.hash = "#how-it-works"; } catch (e) {}
+      scrollToId("how-it-works");
+    }, 0);
   };
+
+  // If the URL hash changes (e.g. footer anchor clicked), navigate to home and scroll.
+  useEffect(() => {
+    const handleHash = () => {
+      if (window.location.hash === "#how-it-works") {
+        setView("home");
+        // small delay to allow render
+        setTimeout(() => scrollToId("how-it-works"), 50);
+      }
+    };
+
+    // check on mount
+    handleHash();
+    window.addEventListener("hashchange", handleHash);
+    return () => window.removeEventListener("hashchange", handleHash);
+  }, []);
   const handleSwapShop = () => {
     setView("home");
     setTimeout(() => scrollToId("catalogue"), 0);
@@ -82,10 +102,10 @@ export default function App() {
         {view === "home" && (
           <>
             <Hero />
+            <Benefits />
             <HowItWorks />
             <CafeMap />
             <ProductCatalogue />
-            <Benefits />
           </>
         )}
         {view === "store" && (
