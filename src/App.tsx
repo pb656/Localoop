@@ -49,10 +49,42 @@ export default function App() {
   // If the URL hash changes (e.g. footer anchor clicked), navigate to home and scroll.
   useEffect(() => {
     const handleHash = () => {
-      if (window.location.hash === "#how-it-works") {
-        setView("home");
-        // small delay to allow render
-        setTimeout(() => scrollToId("how-it-works"), 50);
+      const h = (window.location.hash || "").replace(/^#/, "");
+      switch (h) {
+        case "how-it-works":
+          setView("home");
+          setTimeout(() => scrollToId("how-it-works"), 50);
+          break;
+        case "catalogue":
+        case "swap-shop":
+          setView("home");
+          setTimeout(() => scrollToId("catalogue"), 50);
+          break;
+        case "cafe-loopzones":
+        case "map":
+          setView("home");
+          setTimeout(() => scrollToId("map"), 50);
+          break;
+        case "about-us":
+          setView("about");
+          setTimeout(() => {
+            const el = document.getElementById("about-us");
+            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 100);
+          break;
+        case "loca-store":
+          setView("store");
+          break;
+        case "contact-us":
+          setView("about");
+          setTimeout(() => {
+            const el = document.getElementById("contact-us");
+            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 100);
+          break;
+        default:
+          // no-op
+          break;
       }
     };
 

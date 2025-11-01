@@ -16,6 +16,8 @@ interface AuthContextType {
   signUp: (email: string, password: string, name: string) => Promise<void>;
   signOut: () => Promise<void>;
   refreshUser: () => Promise<void>;
+  // Add credits to the local user state (and optionally persist)
+  addCredits: (amount: number) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -55,6 +57,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } = await supabase.auth.getSession();
     if (session?.user && session?.access_token) {
       await fetchUserData(session.user.id, session.access_token);
+    }
+  };
+
+  const addCredits = async (amount: number) => {
+    // Optimistically update local user state so UI reflects the new balance immediately.
+    setUser((prev) => {
+      if (!prev) return prev;
+      return { ...prev, loopCredits: (prev.loopCredits || 0) + amount };
+    });
+
+    // Try to refresh from server in background to keep server and client in sync.
+    try {
+      await refreshUser();
+    } catch (e) {
+      // ignore — we've already updated optimistically
+      console.warn("Failed to refresh user after addCredits", e);
     }
   };
 
@@ -126,7 +144,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, signIn, signUp, signOut, refreshUser }}
+      value={{ user, loading, signIn, signUp, signOut, refreshUser, addCredits }}
     >
       {children}
     </AuthContext.Provider>

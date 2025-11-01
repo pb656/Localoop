@@ -7,7 +7,7 @@ import { Leaf, Users, Recycle, Globe2, ArrowLeft, Mail, Send } from "lucide-reac
 
 export function AboutUs({ onBack }: { onBack: () => void }) {
   return (
-    <section className="py-16 bg-gradient-to-br from-green-50 to-blue-50 min-h-[70vh]">
+    <section id="about-us" className="py-16 bg-gradient-to-br from-green-50 to-blue-50 min-h-[70vh]">
       <div className="container mx-auto px-4 max-w-5xl">
         <Button variant="ghost" size="sm" onClick={onBack} className="mb-6">
           <ArrowLeft className="h-4 w-4 mr-2" />
@@ -89,7 +89,7 @@ export function AboutUs({ onBack }: { onBack: () => void }) {
           </Card>
         </div>
 
-        <Card className="p-8">
+  <Card id="contact-us" className="p-8">
           <div className="flex items-center gap-2 mb-6">
             <Mail className="h-6 w-6 text-green-600" />
             <h2 className="text-2xl">Get In Touch</h2>

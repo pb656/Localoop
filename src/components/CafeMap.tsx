@@ -28,11 +28,12 @@ function useGoogleMaps(apiKey?: string) {
 interface Cafe {
   id: number;
   name: string;
-  address: string;
-  distance: number;
+  address?: string;
+  distance?: number;
   itemsAvailable: number;
-  lat: number;
-  lng: number;
+  // lat/lng optional — we'll geocode from the name so these are optional
+  lat?: number;
+  lng?: number;
   type: "loopzone" | "pickup";
 }
 
@@ -43,14 +44,12 @@ export function CafeMap() {
   const [geoError, setGeoError] = useState("");
   const googleLoaded = useGoogleMaps(GOOGLE_MAPS_KEY);
 
-  // All cafes are in mock data
+  // Cafes we want to show (Doha locations) — we'll geocode their real location using Google Maps Geocoder
   const cafes: Cafe[] = [
-    { id: 1, name: "Brew & Loop Café", address: "123 Main Street", distance: 0.8, itemsAvailable: 24, lat: 51.515, lng: -0.12, type: "loopzone" },
-    { id: 2, name: "Green Bean Coffee", address: "456 Oak Avenue", distance: 1.2, itemsAvailable: 18, lat: 51.52, lng: -0.115, type: "loopzone" },
-    { id: 3, name: "The Daily Grind", address: "789 Elm Road", distance: 2.1, itemsAvailable: 0, lat: 51.525, lng: -0.13, type: "pickup" },
-    { id: 4, name: "Espresso Yourself", address: "321 Pine Lane", distance: 2.8, itemsAvailable: 31, lat: 51.51, lng: -0.125, type: "loopzone" },
-    { id: 5, name: "Local Grounds", address: "654 Birch Street", distance: 3.5, itemsAvailable: 12, lat: 51.508, lng: -0.11, type: "loopzone" },
-    { id: 6, name: "Corner Café", address: "987 Maple Drive", distance: 4.2, itemsAvailable: 0, lat: 51.505, lng: -0.135, type: "pickup" },
+    { id: 1, name: "Tony's Estate", itemsAvailable: 12, type: "loopzone" },
+    { id: 2, name: "Earth", itemsAvailable: 8, type: "loopzone" },
+    { id: 3, name: "Cup and Go", itemsAvailable: 5, type: "pickup" },
+    { id: 4, name: "Two to Six Cafe", itemsAvailable: 10, type: "loopzone" },
   ];
 
   const defaultCenter: [number, number] = [51.51, -0.12];

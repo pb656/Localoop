@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from "../utils/AuthContext";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -10,6 +11,7 @@ export function LocaStoreCheckout({ selectedPackage, onBack, onSuccess }) {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const { addCredits } = useAuth();
 
   if (!selectedPackage) {
     return (
@@ -21,8 +23,15 @@ export function LocaStoreCheckout({ selectedPackage, onBack, onSuccess }) {
     e.preventDefault();
     setLoading(true);
     // TODO: Add real API logic if needed
-    setTimeout(() => {
+    setTimeout(async () => {
       setLoading(false);
+      // update user's credits locally
+      try {
+        const total = (selectedPackage.credits || 0) + (selectedPackage.bonus || 0);
+        await addCredits(total);
+      } catch (err) {
+        console.warn("Failed to add credits locally", err);
+      }
       setSuccess(true);
       setTimeout(onSuccess, 1600);
     }, 1100);
@@ -85,7 +94,7 @@ export function LocaStoreCheckout({ selectedPackage, onBack, onSuccess }) {
           </div>
           <Button
             type="submit"
-            className="w-full bg-gradient-to-r from-green-600 to-blue-500 hover:from-green-700 hover:to-blue-600 text-lg font-semibold scale-105 shadow-xl py-3 mt-8"
+            className="w-full bg-gradient-to-r from-green-600 to-blue-500 hover:from-green-700 hover:to-blue-600 text-white text-lg font-semibold shadow-xl py-3 mt-8 z-20"
             disabled={loading}
           >
             {loading ? "Processing..." : `Confirm & Buy for ${selectedPackage.price} QAR`}
