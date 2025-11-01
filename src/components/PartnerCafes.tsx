@@ -5,12 +5,10 @@ import { Badge } from "./ui/badge";
 import { Coffee, MapPin, ArrowLeft, ExternalLink } from "lucide-react";
 
 const cafes = [
-  { id: 1, name: "Brew & Loop Café", address: "123 Main Street", distance: 0.8, itemsAvailable: 24, lat: 51.515, lng: -0.12, type: "loopzone" },
-  { id: 2, name: "Green Bean Coffee", address: "456 Oak Avenue", distance: 1.2, itemsAvailable: 18, lat: 51.52, lng: -0.115, type: "loopzone" },
-  { id: 3, name: "The Daily Grind", address: "789 Elm Road", distance: 2.1, itemsAvailable: 0, lat: 51.525, lng: -0.13, type: "pickup" },
-  { id: 4, name: "Espresso Yourself", address: "321 Pine Lane", distance: 2.8, itemsAvailable: 31, lat: 51.51, lng: -0.125, type: "loopzone" },
-  { id: 5, name: "Local Grounds", address: "654 Birch Street", distance: 3.5, itemsAvailable: 12, lat: 51.508, lng: -0.11, type: "loopzone" },
-  { id: 6, name: "Corner Café", address: "987 Maple Drive", distance: 4.2, itemsAvailable: 0, lat: 51.505, lng: -0.135, type: "pickup" },
+  { id: 1, name: "Tony's Estate", address: "Doha", distance: undefined, itemsAvailable: 12, type: "loopzone" },
+  { id: 2, name: "Earth", address: "Doha", distance: undefined, itemsAvailable: 8, type: "loopzone" },
+  { id: 3, name: "Cup and Go", address: "Doha", distance: undefined, itemsAvailable: 5, type: "pickup" },
+  { id: 4, name: "Two to Six Cafe", address: "Doha", distance: undefined, itemsAvailable: 10, type: "loopzone" },
 ] as const;
 
 export function PartnerCafes({ onBack }: { onBack: () => void }) {
@@ -54,7 +52,11 @@ export function PartnerCafes({ onBack }: { onBack: () => void }) {
                     </div>
                   </div>
                 </div>
-                <Button variant="ghost" size="sm" onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${cafe.lat},${cafe.lng}`)}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cafe.name + ' Doha')}`)}
+                >
                   Directions <ExternalLink className="h-4 w-4 ml-1" />
                 </Button>
               </div>
