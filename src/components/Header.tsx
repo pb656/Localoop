@@ -1,4 +1,4 @@
-import { Menu, Leaf, QrCode } from "lucide-react";
+import { Menu, Leaf, QrCode, Coins } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import React from "react";
@@ -48,6 +48,13 @@ export function Header({ onStoreClick, onAboutClick, onCafesClick, onHowItWorksC
             <QrCode className="h-4 w-4 mr-2" />
             Scan LoopTag
           </Button>
+          {user && (
+            <div className="inline-flex items-center gap-2 bg-white/90 px-3 py-1 rounded-full border border-green-100">
+              <Coins className="h-4 w-4 text-amber-500" />
+              <span className="text-sm font-medium text-gray-700">{user.loopCredits}</span>
+              <span className="text-xs text-gray-500">LocaCredit</span>
+            </div>
+          )}
           {!user ? (
             <Button size="sm" className="bg-green-600 hover:bg-green-700" onClick={onSignUpClick}>
               Get Started
@@ -84,6 +91,15 @@ export function Header({ onStoreClick, onAboutClick, onCafesClick, onHowItWorksC
                 Loca Store
               </Button>
               <div className="flex flex-col gap-2 mt-4">
+                {user && (
+                  <div className="flex items-center gap-3 px-3 py-2 bg-white/90 rounded-lg border border-green-100">
+                    <Coins className="h-4 w-4 text-amber-500" />
+                    <div>
+                      <div className="text-xs text-gray-500">Balance</div>
+                      <div className="font-semibold">{user.loopCredits} LocaCredit</div>
+                    </div>
+                  </div>
+                )}
                 <Button variant="outline">
                   <QrCode className="h-4 w-4 mr-2" />
                   Scan LoopTag
