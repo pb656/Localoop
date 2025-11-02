@@ -92,13 +92,20 @@ export function LocaStoreCheckout({ selectedPackage, onBack, onSuccess }) {
               className="bg-white/60"
             />
           </div>
-          <Button
-            type="submit"
-            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-lg font-semibold shadow-xl py-3 mt-8 z-20"
-            disabled={loading}
-          >
-            {loading ? "Processing..." : `Confirm & Buy for ${selectedPackage.price} QAR`}
-          </Button>
+          <div className="relative">
+            <Button
+              type="submit"
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-lg font-semibold shadow-xl py-3 mt-8 z-20"
+              disabled={loading}
+            >
+              {loading ? "Processing..." : `Confirm & Buy for ${selectedPackage.price} QAR`}
+            </Button>
+            {loading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/25 rounded-md">
+                <div className="bg-white/90 text-sm text-gray-900 px-4 py-2 rounded-md">Updating balance…</div>
+              </div>
+            )}
+          </div>
         </form>
       </Card>
     </div>
