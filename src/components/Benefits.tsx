@@ -171,9 +171,9 @@ export function Benefits() {
                 space into a sustainable fashion hub. It's free to join and easy
                 to get started.
               </p>
-              <button className="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+              <a href="#contact-us" className="inline-block px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
                 Become a Partner Café
-              </button>
+              </a>
             </div>
           </TabsContent>
         </Tabs>
