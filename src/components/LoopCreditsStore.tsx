@@ -1,7 +1,6 @@
 import { useAuth } from "../utils/AuthContext";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
-import { Badge } from "./ui/badge";
 import { Coins, Check, CreditCard, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
@@ -58,16 +57,11 @@ export function LoopCreditsStore({ onBack, onBuyCredits }: LoopCreditsStoreProps
           {packages.map((pkg, i) => (
             <Card
               key={pkg.id}
-              className={`group p-6 relative shadow-md transition-transform bg-white ring-green-200 hover:scale-[1.02] ${pkg.popular ? "ring-2 border-green-400" : ""}`}
+              className={`group p-6 relative shadow-md transition-transform bg-white hover:scale-[1.02]`}
             >
-              {pkg.popular && (
-                <Badge className="absolute top-3 right-3 bg-green-700 text-white font-bold shadow-md">Most Popular</Badge>
-              )}
               <div className="text-center mb-6">
                 <div className="flex flex-col items-center gap-2 mb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-4xl font-extrabold text-green-700">{pkg.credits + pkg.bonus}</span>
-                  </div>
+                  <span className="text-4xl font-extrabold text-green-700">{pkg.credits + pkg.bonus}</span>
                   <Coins className="h-6 w-6 text-amber-500 animate-pulse" />
                 </div>
                 {pkg.bonus > 0 && (
