@@ -6,7 +6,7 @@ import React from "react";
 import { useAuth } from "../utils/AuthContext";
 
 export function Header({ onStoreClick, onAboutClick, onCafesClick, onHowItWorksClick, onSwapShopClick, onSignUpClick, onAccountClick, onHomeClick }) {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const navLinks = [
     { name: "How It Works", action: onHowItWorksClick },
     { name: "Café LoopZones", action: onCafesClick },
@@ -60,9 +60,14 @@ export function Header({ onStoreClick, onAboutClick, onCafesClick, onHowItWorksC
               Get Started
             </Button>
           ) : (
-            <Button size="sm" variant="outline" onClick={onAccountClick}>
-              Account
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button size="sm" variant="outline" onClick={onAccountClick}>
+                Account
+              </Button>
+              <Button size="sm" variant="ghost" onClick={async () => { await signOut(); onHomeClick(); }}>
+                Log out
+              </Button>
+            </div>
           )}
         </div>
 
@@ -109,9 +114,14 @@ export function Header({ onStoreClick, onAboutClick, onCafesClick, onHowItWorksC
                     Get Started
                   </Button>
                 ) : (
-                  <Button variant="outline" onClick={onAccountClick}>
-                    Account
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" onClick={onAccountClick}>
+                      Account
+                    </Button>
+                    <Button variant="ghost" onClick={async () => { await signOut(); onHomeClick(); }}>
+                      Log out
+                    </Button>
+                  </div>
                 )}
               </div>
             </nav>

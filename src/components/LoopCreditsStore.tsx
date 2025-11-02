@@ -23,8 +23,8 @@ export function LoopCreditsStore({ onBack, onBuyCredits }: LoopCreditsStoreProps
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-green-50 to-blue-50 py-12 px-4 flex flex-col items-center justify-center overflow-x-hidden">
-      {/* Dramatic spot-glow effects */}
-      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 z-0 w-[90vw] h-[50vw] max-w-5xl bg-gradient-to-tl from-green-300 via-blue-300 to-transparent opacity-20 blur-2xl rounded-full"></div>
+  {/* Dramatic spot-glow effects (reduced so UI contrast remains strong) */}
+  <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 z-0 w-[90vw] h-[50vw] max-w-5xl bg-gradient-to-tl from-green-300 via-blue-300 to-transparent opacity-6 blur-xl rounded-full"></div>
       <div className="container mx-auto max-w-6xl z-10 relative">
         <Button
           variant="ghost"
@@ -77,7 +77,7 @@ export function LoopCreditsStore({ onBack, onBuyCredits }: LoopCreditsStoreProps
                 <div className="text-sm text-gray-500">{(pkg.price / (pkg.credits + pkg.bonus)).toFixed(2)} QAR per credit</div>
               </div>
               <Button
-                className="w-full bg-gradient-to-r from-green-600 to-blue-500 hover:from-green-700 hover:to-blue-600 shadow-lg font-semibold tracking-wide py-2.5 text-lg"
+                className="w-full bg-gradient-to-r from-green-600 to-blue-500 hover:from-green-700 hover:to-blue-600 text-white shadow-lg font-semibold tracking-wide py-2.5 text-lg"
                 onClick={() => onBuyCredits(pkg)}
                 data-testid={`buy-locacredit-${pkg.credits}`}
               >
