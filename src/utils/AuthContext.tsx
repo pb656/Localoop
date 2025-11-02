@@ -16,8 +16,8 @@ interface AuthContextType {
   signUp: (email: string, password: string, name: string) => Promise<void>;
   signOut: () => Promise<void>;
   refreshUser: () => Promise<void>;
-  // Add credits to the local user state (and optionally persist)
-  addCredits: (amount: number) => Promise<void>;
+  // Add credits to the user's account (persist on server)
+  addCredits: (amount: number, packageId?: number | null) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -60,19 +60,51 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const addCredits = async (amount: number) => {
-    // Optimistically update local user state so UI reflects the new balance immediately.
+  const addCredits = async (amount: number, packageId?: number | null) => {
+    // Optimistic update while we persist
     setUser((prev) => {
       if (!prev) return prev;
       return { ...prev, loopCredits: (prev.loopCredits || 0) + amount };
     });
 
-    // Try to refresh from server in background to keep server and client in sync.
     try {
-      await refreshUser();
+      // Get session to send access token if available
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      const userId = session?.user?.id || (user && user.id);
+      const accessToken = session?.access_token;
+
+      if (!userId) {
+        throw new Error("No authenticated user to add credits for");
+      }
+
+      const resp = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-ab8570d3/purchase-credits`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+        },
+        body: JSON.stringify({ userId, credits: amount, packageId: packageId ?? null }),
+      });
+
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        throw new Error(err.message || `Failed to persist credits: ${resp.status}`);
+      }
+
+      const data = await resp.json();
+      // server returns newBalance
+      if (data?.newBalance !== undefined) {
+        setUser((prev) => (prev ? { ...prev, loopCredits: data.newBalance } : prev));
+      } else {
+        // if server didn't return balance, refresh user data
+        await refreshUser();
+      }
     } catch (e) {
-      // ignore — we've already updated optimistically
-      console.warn("Failed to refresh user after addCredits", e);
+      // If persistence fails, keep optimistic update and log the error
+      console.warn("Failed to persist credits to server", e);
     }
   };
 

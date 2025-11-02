@@ -25,10 +25,10 @@ export function LocaStoreCheckout({ selectedPackage, onBack, onSuccess }) {
     // TODO: Add real API logic if needed
     setTimeout(async () => {
       setLoading(false);
-      // update user's credits locally
+      // update user's credits and persist on server
       try {
         const total = (selectedPackage.credits || 0) + (selectedPackage.bonus || 0);
-        await addCredits(total);
+        await addCredits(total, selectedPackage.id);
       } catch (err) {
         console.warn("Failed to add credits locally", err);
       }
@@ -94,7 +94,7 @@ export function LocaStoreCheckout({ selectedPackage, onBack, onSuccess }) {
           </div>
           <Button
             type="submit"
-            className="w-full bg-gradient-to-r from-green-600 to-blue-500 hover:from-green-700 hover:to-blue-600 text-white text-lg font-semibold shadow-xl py-3 mt-8 z-20"
+            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-lg font-semibold shadow-xl py-3 mt-8 z-20"
             disabled={loading}
           >
             {loading ? "Processing..." : `Confirm & Buy for ${selectedPackage.price} QAR`}

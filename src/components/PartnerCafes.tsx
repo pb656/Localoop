@@ -55,7 +55,7 @@ export function PartnerCafes({ onBack }: { onBack: () => void }) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cafe.name + ' Doha')}`)}
+                  onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cafe.name + ' Doha')}`, '_blank')}
                 >
                   Directions <ExternalLink className="h-4 w-4 ml-1" />
                 </Button>

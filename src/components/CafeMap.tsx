@@ -52,7 +52,8 @@ export function CafeMap() {
     { id: 4, name: "Two to Six Cafe", itemsAvailable: 10, type: "loopzone" },
   ];
 
-  const defaultCenter: [number, number] = [51.51, -0.12];
+  // Doha center
+  const defaultCenter: [number, number] = [25.2854, 51.5310];
 
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<any>(null);
@@ -97,38 +98,50 @@ export function CafeMap() {
     mapInstanceRef.current.setCenter({ lat: center[0], lng: center[1] });
   }, [userPosition, googleLoaded]);
 
-  // Render markers
+  // Render markers — geocode each cafe name to find its lat/lng in Doha
   useEffect(() => {
     if (!googleLoaded || !mapInstanceRef.current) return;
     // clear old markers
     markersRef.current.forEach((m) => m.setMap(null));
     markersRef.current = [];
+
+    const geocoder = new (window as any).google.maps.Geocoder();
+
     cafes.forEach((cafe) => {
-      const marker = new (window as any).google.maps.Marker({
-        position: { lat: cafe.lat, lng: cafe.lng },
-        map: mapInstanceRef.current,
-        title: cafe.name,
+      const query = `${cafe.name} Doha`;
+      geocoder.geocode({ address: query }, (results: any, status: any) => {
+        if (status === (window as any).google.maps.GeocoderStatus.OK && results && results[0]) {
+          const loc = results[0].geometry.location;
+          const marker = new (window as any).google.maps.Marker({
+            position: loc,
+            map: mapInstanceRef.current,
+            title: cafe.name,
+          });
+          const info = new (window as any).google.maps.InfoWindow({
+            content: `<div><strong>${cafe.name}</strong><br/>${results[0].formatted_address || 'Doha'}${cafe.itemsAvailable > 0 ? `<div style="margin-top:6px;color:#16a34a;font-weight:600">${cafe.itemsAvailable} items</div>` : ''}</div>`,
+          });
+          marker.addListener('click', () => {
+            info.open({ anchor: marker, map: mapInstanceRef.current });
+            setSelectedCafe(cafe);
+          });
+          markersRef.current.push(marker);
+        } else {
+          console.warn('Geocode failed for', cafe.name, status);
+        }
       });
-      const info = new (window as any).google.maps.InfoWindow({
-        content: `<div><strong>${cafe.name}</strong><br/>${cafe.address}${cafe.itemsAvailable > 0 ? `<div style=\"margin-top:6px;color:#16a34a;font-weight:600\">${cafe.itemsAvailable} items</div>` : ""}</div>`,
-      });
-      marker.addListener("click", () => {
-        info.open({ anchor: marker, map: mapInstanceRef.current });
-        setSelectedCafe(cafe);
-      });
-      markersRef.current.push(marker);
     });
+
     if (userPosition) {
       const userMarker = new (window as any).google.maps.Marker({
         position: { lat: userPosition[0], lng: userPosition[1] },
         map: mapInstanceRef.current,
-        title: "You are here",
+        title: 'You are here',
         icon: {
           path: (window as any).google.maps.SymbolPath.CIRCLE,
           scale: 7,
-          fillColor: "#2563eb",
+          fillColor: '#2563eb',
           fillOpacity: 0.9,
-          strokeColor: "white",
+          strokeColor: 'white',
           strokeWeight: 2,
         },
       });
