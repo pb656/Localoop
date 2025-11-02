@@ -49,7 +49,7 @@ export function LocaStoreCheckout({ selectedPackage, onBack, onSuccess }) {
 
   return (
     <div className="flex min-h-[80vh] items-center justify-center py-12 px-2">
-      <Card className="relative w-full max-w-lg p-10 bg-white/90 border-green-200 shadow-2xl backdrop-blur-lg">
+  <Card className="relative w-full max-w-lg p-10 bg-white border-green-200 shadow-2xl">
         <Button variant="ghost" size="sm" onClick={onBack} className="mb-2 absolute left-6 top-6">
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back
@@ -95,7 +95,7 @@ export function LocaStoreCheckout({ selectedPackage, onBack, onSuccess }) {
           <div className="relative">
             <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-lg font-semibold shadow-xl py-3 mt-8 z-50 pointer-events-auto"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold shadow-lg py-3 mt-8 z-50 pointer-events-auto"
               disabled={loading}
             >
               {loading ? "Processing..." : `Confirm & Buy for ${selectedPackage.price} QAR`}
