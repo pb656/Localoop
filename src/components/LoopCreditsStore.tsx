@@ -58,7 +58,7 @@ export function LoopCreditsStore({ onBack, onBuyCredits }: LoopCreditsStoreProps
           {packages.map((pkg, i) => (
             <Card
               key={pkg.id}
-              className={`group p-6 relative shadow-xl transition-transform bg-white/80 ring-green-200 hover:scale-[1.04] hover:ring-4 backdrop-blur-md ${pkg.popular ? "ring-2 border-green-400 bg-green-50/90" : ""}`}
+              className={`group p-6 relative shadow-md transition-transform bg-white ring-green-200 hover:scale-[1.02] ${pkg.popular ? "ring-2 border-green-400 bg-green-50/90" : ""}`}
             >
               {pkg.popular && (
                 <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-green-700 text-white font-bold shadow-md animate-pop">Most Popular</Badge>
@@ -77,7 +77,7 @@ export function LoopCreditsStore({ onBack, onBuyCredits }: LoopCreditsStoreProps
                 <div className="text-sm text-gray-500">{(pkg.price / (pkg.credits + pkg.bonus)).toFixed(2)} QAR per credit</div>
               </div>
               <Button
-                className="w-full bg-gradient-to-r from-green-600 to-blue-500 hover:from-green-700 hover:to-blue-600 text-white shadow-lg font-semibold tracking-wide py-2.5 text-lg"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg font-semibold tracking-wide py-2.5 text-lg z-50 pointer-events-auto"
                 onClick={() => onBuyCredits(pkg)}
                 data-testid={`buy-locacredit-${pkg.credits}`}
               >

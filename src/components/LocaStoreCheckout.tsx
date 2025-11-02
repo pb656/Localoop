@@ -95,7 +95,7 @@ export function LocaStoreCheckout({ selectedPackage, onBack, onSuccess }) {
           <div className="relative">
             <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-lg font-semibold shadow-xl py-3 mt-8 z-20"
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-lg font-semibold shadow-xl py-3 mt-8 z-50 pointer-events-auto"
               disabled={loading}
             >
               {loading ? "Processing..." : `Confirm & Buy for ${selectedPackage.price} QAR`}
