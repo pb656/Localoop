@@ -10,6 +10,7 @@ const GOOGLE_MAPS_KEY = (import.meta as any).env?.VITE_GOOGLE_MAPS_API_KEY as st
 
 function useGoogleMaps(apiKey?: string) {
   const [loaded, setLoaded] = useState(false);
+    const [error, setError] = useState<string | null>(null);
   useEffect(() => {
     if (!apiKey) return;
     if ((window as any).google?.maps) {
@@ -20,9 +21,15 @@ function useGoogleMaps(apiKey?: string) {
     script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
     script.async = true;
     script.onload = () => setLoaded(true);
+      script.onerror = (e) => {
+        console.error('Google Maps script failed to load', e);
+        setError('Failed to load Google Maps script');
+      };
     document.head.appendChild(script);
   }, [apiKey]);
-  return loaded;
+    // attach error on the returned value via a tuple would be nicer but keep simple
+    (useGoogleMaps as any)._lastError = error;
+    return loaded;
 }
 
 interface Cafe {
@@ -220,7 +227,15 @@ export function CafeMap() {
                       <span className="text-sm text-gray-600">{cafe.itemsAvailable} items available</span>
                     )}
                   </div>
-                  <Button size="sm" variant="ghost" onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${cafe.lat},${cafe.lng}`)}>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => {
+                      // If we have precise coordinates, open them; otherwise fallback to name search in Doha
+                      const query = (cafe.lat && cafe.lng) ? `${cafe.lat},${cafe.lng}` : encodeURIComponent(`${cafe.name} Doha`);
+                      window.open(`https://www.google.com/maps/search/?api=1&query=${query}`);
+                    }}
+                  >
                     Get Directions
                   </Button>
                 </div>
